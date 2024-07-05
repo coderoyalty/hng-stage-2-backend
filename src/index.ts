@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import errorMiddleWare from "./middlewares/error.middleware";
+import { authRouter } from "./routes/auth.route";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -11,6 +12,12 @@ app.use(
   }),
 );
 
+app.use(authRouter);
+
+app.get("/", (req: Request, res: Response) => {
+  return res.redirect("https://coderoyalty.vercel.app");
+});
+
 app.get("/api/status", (req: Request, res: Response) => {
   return res.json({
     message: "The service is alive, and active!",
@@ -20,8 +27,11 @@ app.get("/api/status", (req: Request, res: Response) => {
 });
 
 app.use(errorMiddleWare);
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+
+if (require.main == module) {
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+}
 
 export default app;
