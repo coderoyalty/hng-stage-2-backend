@@ -61,4 +61,9 @@ const loginSchema = z.object({
     }),
 });
 
-export { userSchema, loginSchema };
+const orgSchema = z.object({
+  name: z.string().min(1),
+  description: z.string(),
+});
+
+export { userSchema, loginSchema, orgSchema };

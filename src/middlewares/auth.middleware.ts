@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { TokenPayload } from "../types/jwt";
 
 export interface AuthRequest extends Request {
-  user?: string | jwt.JwtPayload;
+  user?: TokenPayload;
 }
 
 export const verifyToken = (
@@ -38,7 +39,7 @@ export const verifyToken = (
       });
     }
 
-    req.user = decoded; // Attach decoded token payload to the request object
+    req.user = decoded as any; // Attach decoded token payload to the request object
     next();
   });
 };
