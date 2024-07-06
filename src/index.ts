@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import errorMiddleWare from "./middlewares/error.middleware";
 import { authRouter } from "./routes/auth.route";
 import asyncHandler from "express-async-handler";
+import { userRouter } from "./routes/user.route";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -14,6 +15,7 @@ app.use(
 );
 
 app.use(asyncHandler(authRouter));
+app.use(asyncHandler(userRouter));
 
 app.get("/", (req: Request, res: Response) => {
   return res.redirect("https://coderoyalty.vercel.app");

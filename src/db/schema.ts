@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm";
 import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
 
-export const usersTable = pgTable("users", {
+export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   firstName: text("firstName").notNull(),
   lastName: text("lastName").notNull(),
@@ -10,18 +10,18 @@ export const usersTable = pgTable("users", {
   phone: text("phone"),
 });
 
-export const orgsTable = pgTable("organisations", {
+export const organisations = pgTable("organisations", {
   orgId: serial("orgId").primaryKey(),
   name: text("name").notNull(),
   description: text("description"),
 });
 
-export const usersRelation = relations(usersTable, ({ many }) => ({
-  organisations: many(orgsTable),
+export const usersRelation = relations(users, ({ many }) => ({
+  organisations: many(organisations),
 }));
 
-export const organisationsRelation = relations(orgsTable, ({ many }) => ({
-  users: many(usersTable),
+export const organisationsRelation = relations(organisations, ({ many }) => ({
+  users: many(users),
 }));
 
 export const usersToOrgs = pgTable(
@@ -29,27 +29,27 @@ export const usersToOrgs = pgTable(
   {
     userId: integer("userId")
       .notNull()
-      .references(() => usersTable.id),
+      .references(() => users.id),
     orgId: integer("orgId")
       .notNull()
-      .references(() => orgsTable.orgId),
+      .references(() => organisations.orgId),
   },
   (table) => ({ pk: [table.userId, table.orgId] }),
 );
 
 export const usersToOrgsRelations = relations(usersToOrgs, ({ one }) => ({
-  group: one(orgsTable, {
+  organisation: one(organisations, {
     fields: [usersToOrgs.orgId],
-    references: [orgsTable.orgId],
+    references: [organisations.orgId],
   }),
-  user: one(usersTable, {
+  user: one(users, {
     fields: [usersToOrgs.userId],
-    references: [usersTable.id],
+    references: [users.id],
   }),
 }));
 
-export type InsertUser = typeof usersTable.$inferInsert;
-export type SelectUser = typeof usersTable.$inferSelect;
+export type InsertUser = typeof users.$inferInsert;
+export type SelectUser = typeof users.$inferSelect;
 
-export type InsertOrganisation = typeof orgsTable.$inferInsert;
-export type SelectOrganisation = typeof orgsTable.$inferSelect;
+export type InsertOrganisation = typeof organisations.$inferInsert;
+export type SelectOrganisation = typeof organisations.$inferSelect;

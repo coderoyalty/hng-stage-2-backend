@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { loginSchema, userSchema } from "../utils/schema";
 import { db } from "../db";
-import { orgsTable, usersTable, usersToOrgs } from "../db/schema";
+import { organisations, users, usersToOrgs } from "../db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -26,8 +26,8 @@ const register = async (req: Request, res: Response) => {
 
   const [existingUser] = await db
     .select()
-    .from(usersTable)
-    .where(eq(usersTable.email, parsedData.data.email));
+    .from(users)
+    .where(eq(users.email, parsedData.data.email));
 
   if (existingUser) {
     return res.status(400).json({
@@ -43,11 +43,11 @@ const register = async (req: Request, res: Response) => {
 
   const newUser = await db.transaction(async (trx) => {
     const [newUser] = await trx
-      .insert(usersTable)
+      .insert(users)
       .values({ ...user, password: hashedPassword })
       .returning();
     const [newOrg] = await trx
-      .insert(orgsTable)
+      .insert(organisations)
       .values({
         name: `${user.firstName}'s Organisation`,
         description: `${user.firstName}'s default organisation`,
@@ -101,8 +101,8 @@ const login = async (req: Request, res: Response) => {
   const loginData = parsedData.data;
   const result = await db
     .select()
-    .from(usersTable)
-    .where(eq(usersTable.email, loginData.email));
+    .from(users)
+    .where(eq(users.email, loginData.email));
 
   if (result.length === 0) {
     return res.status(401).json({
