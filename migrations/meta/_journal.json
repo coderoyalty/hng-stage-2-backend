@@ -8,6 +8,13 @@
       "when": 1720226897106,
       "tag": "0000_tricky_iron_monger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1720267960784,
+      "tag": "0001_productive_trish_tilby",
+      "breakpoints": true
     }
   ]
 }
