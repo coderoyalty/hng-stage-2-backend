@@ -38,7 +38,8 @@ const userSchema = z.object({
     .max(15, { message: "Phone number cannot be longer than 15 characters." })
     .regex(/^\+?[1-9]\d{1,14}$/, {
       message: "Phone number must be a valid international phone number.",
-    }),
+    })
+    .optional(),
 });
 
 const loginSchema = z.object({
