@@ -99,12 +99,12 @@ const login = async (req: Request, res: Response) => {
   }
 
   const loginData = parsedData.data;
-  const result = await db
+  const [user] = await db
     .select()
     .from(users)
     .where(eq(users.email, loginData.email));
 
-  if (result.length === 0) {
+  if (!user) {
     return res.status(401).json({
       status: "Bad request",
       message: "Authentication failed",
@@ -112,7 +112,6 @@ const login = async (req: Request, res: Response) => {
     });
   }
 
-  const user = result[0];
   if (!(await bcrypt.compare(loginData.password, user.password))) {
     return res.status(401).json({
       status: "Bad request",
