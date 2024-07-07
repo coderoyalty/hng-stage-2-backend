@@ -2,7 +2,6 @@ import { db } from "../db";
 import request from "supertest";
 import app from "../index";
 import jwt from "jsonwebtoken";
-import { organisations } from "../db/schema";
 
 jest.mock("dotenv", () => ({
   config: jest.fn(),

@@ -22,8 +22,6 @@ const getUserRecord = async (req: AuthRequest, res: Response) => {
   // Get the user record
   const [user] = await getUserById(userId);
 
-  console.log(user);
-
   if (!user) {
     return res.status(404).json({
       status: "error",
