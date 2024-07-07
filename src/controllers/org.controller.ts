@@ -39,6 +39,14 @@ const getOrganisationRecords = async (req: AuthRequest, res: Response) => {
 const getOrganisationRecord = async (req: AuthRequest, res: Response) => {
   const orgId = parseInt(req.params.orgId, 10);
 
+  if (isNaN(orgId)) {
+    return res.status(400).json({
+      status: "Bad Request",
+      message: "Client error",
+      statusCode: 400,
+    });
+  }
+
   const [organisation] = await db
     .select()
     .from(organisations)
@@ -85,6 +93,14 @@ const createOrganisation = async (req: AuthRequest, res: Response) => {
 const addUserToOrganisation = async (req: AuthRequest, res: Response) => {
   const userId = parseInt(req.body.userId, 10);
   const orgId = parseInt(req.params.orgId, 10);
+
+  if (isNaN(userId) || isNaN(orgId)) {
+    return res.status(400).json({
+      status: "Bad Request",
+      message: "Client error",
+      statusCode: 400,
+    });
+  }
 
   const org = await db.transaction(async (tx) => {
     const [org] = await tx

@@ -19,6 +19,14 @@ async function getUserById(id: SelectUser["id"]): Promise<
 const getUserRecord = async (req: AuthRequest, res: Response) => {
   const userId: SelectUser["id"] = parseInt(req.params.id, 10);
 
+  if (isNaN(userId)) {
+    return res.status(400).json({
+      status: "Bad Request",
+      message: "Client error",
+      statusCode: 400,
+    });
+  }
+
   // Get the user record
   const [user] = await getUserById(userId);
 
