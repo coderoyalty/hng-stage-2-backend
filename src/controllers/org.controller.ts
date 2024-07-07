@@ -39,7 +39,10 @@ const getOrganisationRecords = async (req: AuthRequest, res: Response) => {
 const getOrganisationRecord = async (req: AuthRequest, res: Response) => {
   const orgId = parseInt(req.params.orgId, 10);
 
-  const [organisation] = await db.select().from(organisations);
+  const [organisation] = await db
+    .select()
+    .from(organisations)
+    .where(eq(organisations.orgId, orgId));
   if (!organisation) {
     return res.status(404).json({
       status: "error",
@@ -60,11 +63,6 @@ const createOrganisation = async (req: AuthRequest, res: Response) => {
   const parsedData = orgSchema.safeParse(body);
 
   if (!parsedData.success) {
-    const errors = parsedData.error.errors.map((err) => ({
-      field: err.path.join("."),
-      message: err.message,
-    }));
-
     return res.status(400).json({
       status: "Bad Request",
       message: "Client error",
