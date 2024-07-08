@@ -16,7 +16,7 @@ describe("Authentication Endpoints", () => {
     firstName: "John",
     lastName: "Doe",
     email: "john.doe@example.com",
-    password: "Password123", // password doesn't contain symbol
+    password: "", // password doesn't contain symbol
     phone: "1234567890",
   };
 
