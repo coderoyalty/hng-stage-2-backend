@@ -23,16 +23,18 @@ const getOrganisationRecords = async (req: AuthRequest, res: Response) => {
     },
   });
 
-  const organisations = orgs.map((org) => ({
-    orgId: org.organisation.orgId,
-    name: org.organisation.name,
-    description: org.organisation.description,
+  const organisations = orgs.map(({ organisation }) => ({
+    orgId: organisation.orgId,
+    name: organisation.name,
+    description: organisation.description,
   }));
 
   return res.status(200).json({
     status: "success",
     message: "Successfully fetched the data",
-    organisations,
+    data: {
+      organisations,
+    },
   });
 };
 
@@ -78,7 +80,7 @@ const createOrganisation = async (req: AuthRequest, res: Response) => {
     });
   }
 
-  const organisation = await db
+  const [organisation] = await db
     .insert(organisations)
     .values(parsedData.data)
     .returning();
