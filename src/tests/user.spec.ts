@@ -58,9 +58,11 @@ describe("User Record Access", () => {
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(response.status).toBe(200);
-      expect(response.body.data).toHaveProperty("user");
-      expect(response.body.data.organisations).toBeDefined();
-      expect(response.body.data.organisations).toHaveLength(mockOrgs.length);
+      expect(response.body.data).toHaveProperty("userId");
+      expect(response.body.data).toHaveProperty("phone");
+      expect(response.body.data).toHaveProperty("email");
+      expect(response.body.data).toHaveProperty("firstName");
+      expect(response.body.data).toHaveProperty("lastName");
     });
 
     it("should return 404 if the user does not exist", async () => {

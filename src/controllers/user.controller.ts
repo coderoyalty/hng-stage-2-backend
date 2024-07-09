@@ -38,30 +38,15 @@ const getUserRecord = async (req: AuthRequest, res: Response) => {
     });
   }
 
-  // Get organisations the user belongs to or created
-  const orgs = await db.query.usersToOrgs.findMany({
-    where: eq(usersToOrgs.userId, user.id),
-    with: {
-      organisation: {
-        columns: {
-          orgId: false,
-        },
-      },
-    },
-  });
-
   return res.status(200).json({
     status: "success",
-    message: `${user.firstName} here are the organisations you created`,
+    message: `User request successful`,
     data: {
-      user: {
-        userId: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phone: user.phone,
-      },
-      organisations: orgs,
+      userId: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
     },
   });
 };
